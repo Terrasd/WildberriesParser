@@ -17,6 +17,7 @@
 4. Сделайте миграции (вы должны находится в том каталоге, где расположен manage.py)
 
 ```python manage.py makemigrations```
+
 ```python manage.py migrate```
 
 5. Парсинг
