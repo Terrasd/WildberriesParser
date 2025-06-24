@@ -1,3 +1,7 @@
+let allProducts = [];
+let globalMinPrice = 0;
+let globalMaxPrice = 0;
+
 document.addEventListener('DOMContentLoaded', () => {
   const minPriceSlider = document.getElementById('minPrice');
   const maxPriceSlider = document.getElementById('maxPrice');
@@ -7,8 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const ratingMinInput = document.getElementById('ratingMin');
   const feedbacksMinInput = document.getElementById('feedbacksMin');
   const sortSelect = document.getElementById('sortSelect');
-
-  let allProducts = [];
 
   function updatePriceLabels() {
     minPriceValue.textContent = minPriceSlider.value;
@@ -36,6 +38,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderTable(data);
     updateCharts(data);
+  }
+
+  async function fetchPriceRange() {
+    const response = await fetch('/api/products/price-range/');
+    const data = await response.json();
+
+    globalMinPrice = Math.floor(data.min_price);
+    globalMaxPrice = Math.ceil(data.max_price);
+
+    minPriceSlider.min = globalMinPrice;
+    minPriceSlider.max = globalMaxPrice;
+
+    maxPriceSlider.min = globalMinPrice;
+    maxPriceSlider.max = globalMaxPrice;
+
+    if (!minPriceSlider.value || minPriceSlider.value < globalMinPrice)
+      minPriceSlider.value = globalMinPrice;
+
+    if (!maxPriceSlider.value || maxPriceSlider.value > globalMaxPrice)
+      maxPriceSlider.value = globalMaxPrice;
+
+    updatePriceLabels();
   }
 
   function renderTable(products) {
@@ -73,5 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
   sortSelect.addEventListener('change', fetchProducts);
 
   updatePriceLabels();
+  fetchPriceRange();
   fetchProducts();
 });
