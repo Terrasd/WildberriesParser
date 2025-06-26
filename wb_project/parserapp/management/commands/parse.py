@@ -8,7 +8,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'query', type=str, help='Поисковый запрос (например, телевизор)'
+            'query', type=str, help='Поисковый запрос (например, "телевизор")'
+        )
+        parser.add_argument(
+            'num_pages', type=int, help='Кол-во страниц WB для парса'
         )
 
     def handle(self, *args, **kwargs):
@@ -17,7 +20,7 @@ class Command(BaseCommand):
 
         Product.objects.all().delete()
 
-        products = parse_products_from_wb(query, max_pages=3)
+        products = parse_products_from_wb(query, kwargs['num_pages'])
         self.stdout.write(f'Найдено товаров: {len(products)}')
 
         for p in products:

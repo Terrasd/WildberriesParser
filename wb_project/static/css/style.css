@@ -7,6 +7,16 @@ body {
   margin-bottom: 20px;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
 .price-values {
   display: flex;
   justify-content: space-between;
@@ -30,14 +40,18 @@ body {
   -webkit-appearance: none;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+th.sorted-asc::after {
+  content: " ↑";
 }
-
-th, td {
-  padding: 8px;
-  border: 1px solid #ccc;
+th.sorted-desc::after {
+  content: " ↓";
+}
+th[data-sort] {
+  user-select: none;
+  cursor: pointer;
+}
+th {
+  user-select: none;
 }
 
 #chartWidget {

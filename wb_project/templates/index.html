@@ -28,32 +28,17 @@
     <label>Отзывы от:
       <input type="number" id="feedbacksMin" min="0" value="0">
     </label>
-
-    <label>Сортировка:
-      <select id="sortSelect">
-        <option value="">Без сортировки</option>
-        <option value="price">Цена ↑</option>
-        <option value="-price">Цена ↓</option>
-        <option value="rating">Рейтинг ↑</option>
-        <option value="-rating">Рейтинг ↓</option>
-        <option value="feedbacks">Отзывы ↑</option>
-        <option value="-feedbacks">Отзывы ↓</option>
-        <option value="name">Название ↑</option>
-        <option value="-name">Название ↓</option>
-      </select>
-    </label>
-
   </div>
 
   <table>
     <thead>
       <tr>
         <th>Артикул</th>
-        <th>Название</th>
-        <th>Цена</th>
-        <th>Цена со скидкой</th>
-        <th>Рейтинг</th>
-        <th>Отзывы</th>
+        <th data-sort="name">Название</th>
+        <th data-sort="price">Цена</th>
+        <th data-sort="sale_price">Цена со скидкой</th>
+        <th data-sort="rating">Рейтинг</th>
+        <th data-sort="feedbacks">Отзывы</th>
       </tr>
     </thead>
     <tbody id="productTableBody">
@@ -61,7 +46,7 @@
   </table>
 
   <div id="chartWidget">
-    <div id="chartHeader" onclick="toggleChartWidget()">📊 Диаграммы</div>
+    <div id="chartHeader" onclick="toggleChartWidget()">Диаграммы</div>
     <div id="chartContent">
       <canvas id="priceHistogram" height="150"></canvas>
       <canvas id="discountVsRatingChart" height="150"></canvas>

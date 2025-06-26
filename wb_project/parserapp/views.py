@@ -25,7 +25,9 @@ class ProductListAPIView(APIView):
         if min_feedbacks is not None:
             queryset = queryset.filter(feedbacks__gte=int(min_feedbacks))
 
-        allowed_fields = ['price', 'rating', 'feedbacks', 'name']
+        allowed_fields = [
+            'price', 'rating', 'feedbacks', 'name', 'sale_price'
+        ]
         if ordering:
             direction = ''
             field = ordering

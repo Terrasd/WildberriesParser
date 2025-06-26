@@ -1,6 +1,7 @@
 let allProducts = [];
 let globalMinPrice = 0;
 let globalMaxPrice = 0;
+let currentOrdering = '';
 
 document.addEventListener('DOMContentLoaded', () => {
   const minPriceSlider = document.getElementById('minPrice');
@@ -10,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const ratingMinInput = document.getElementById('ratingMin');
   const feedbacksMinInput = document.getElementById('feedbacksMin');
-  const sortSelect = document.getElementById('sortSelect');
 
   function updatePriceLabels() {
     minPriceValue.textContent = minPriceSlider.value;
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
       max_price: maxPriceSlider.value,
       min_rating: ratingMinInput.value,
       min_feedbacks: feedbacksMinInput.value,
-      ordering: sortSelect.value
+      ordering: currentOrdering
     });
 
     const response = await fetch(`/api/products/?${params.toString()}`);
@@ -94,7 +94,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ratingMinInput.addEventListener('change', fetchProducts);
   feedbacksMinInput.addEventListener('change', fetchProducts);
-  sortSelect.addEventListener('change', fetchProducts);
+
+  document.querySelectorAll('th[data-sort]').forEach(header => {
+    header.addEventListener('click', () => {
+      const field = header.getAttribute('data-sort');
+
+      if (currentOrdering === field) {
+        currentOrdering = `-${field}`;
+      } else if (currentOrdering === `-${field}`) {
+        currentOrdering = '';
+      } else {
+        currentOrdering = field;
+      }
+
+      fetchProducts();
+      highlightSortedColumn(header);
+    });
+  });
+
+  function highlightSortedColumn(activeHeader) {
+    document.querySelectorAll('th[data-sort]').forEach(header => {
+      header.classList.remove('sorted-asc', 'sorted-desc');
+    });
+
+    if (currentOrdering.startsWith('-')) {
+      activeHeader.classList.add('sorted-desc');
+    } else if (currentOrdering) {
+      activeHeader.classList.add('sorted-asc');
+    }
+  }
 
   updatePriceLabels();
   fetchPriceRange();
